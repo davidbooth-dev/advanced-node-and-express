@@ -56,4 +56,3 @@ module.exports = function(app, db) {
     )
   );
 };
-S
