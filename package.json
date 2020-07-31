@@ -5,7 +5,7 @@
   "name": "fcc-advanced-node-and-express",
   "author": "David Booth",
   "version": "0.0.1",
-  "description": "Node and Exress using Pug as the view engine",
+  "description": "Node and Express using Pug as the view engine",
   "main": "server.js",
   "scripts": {
     "server": "nodenv . --exec nodemon",
@@ -14,13 +14,19 @@
   "license": "MIT",
   "devDependencies": {
     "node-env-run": "^4.0.1",
-    "nodemon": "^2.0.4",
-    "pug": "^3.0.0",
-    "pug-cli": "^1.0.0-alpha6"
+    "nodemon": "^2.0.4"
   },
   "dependencies": {
     "express": "^4.16.1",
-    "cors": "^2.8.1"
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.1",
+    "pug": "^3.0.0",
+    "pug-cli": "^1.0.0-alpha6",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "express-session": "^1.15.0",
+		"mongodb": "^3.2.3",
+    "bcrypt": "^3.0.6"
   },
   "engines": {
     "node": "^12.0.0"
