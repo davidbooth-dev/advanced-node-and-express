@@ -1,46 +1,45 @@
 "use strict";
 
 const express = require("express");
-const cors = require('cors');
-//const pug = require('pug');
-const path = require('path');
+const bodyParser = require("body-parser");
+const path = require("path");
+const mongo = require("mongodb").MongoClient;
 
 const fccTesting = require("./freeCodeCamp/fcctesting.js");
 
 const app = express();
-const router = express.Router();
 
 fccTesting(app); //For FCC testing purposes
 
 app.use("/public", express.static("./public"));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set('view engine', 'pug');
+app.set("view engine", "pug");
 
-app.use('/', cors(), router);
+const dboptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+};
 
-router.get('/', function(req, res){
-  //Change the response to render the Pug template
-  res.render(process.cwd() + '/views/pug/index', { title: 'Test Pug' });
+let db;
+
+// Setup database
+mongo.connect(process.env.MONGO_URI, dboptions, function(err, client) {
+  if (err) console.log("Database error: " + err);
+  else {
+    console.log("Connected to database");
+    db = client.db("nodedb");
+  }
 });
 
-router.get('/profile', function(req, res){
-  //Change the response to render the Pug template
-  res.render(process.cwd() + '/views/pug/profile', { title: 'profile' });
-});
+const auth = require("./auth");
+const routes = require("./routes");
 
-router.get('/login', function(req, res){
-  //Change the response to render the Pug template
-  res.render(process.cwd() + '/views/pug/login', { title: 'Login' });
-});
+auth(app, db);
+routes(app, db); 
 
-router.get('/register', function(req, res){
-  //Change the response to render the Pug template
-  res.render(process.cwd() + '/views/pug/register', { title: 'Register' });
-});
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Listening on port " + process.env.PORT);
+app.listen(process.env.PORT || 3001, () => {
+  console.log("Express Server Listening on Port " + process.env.PORT || 3001);
 });
