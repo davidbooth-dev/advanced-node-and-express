@@ -30,16 +30,15 @@ mongo.connect(process.env.MONGO_URI, dboptions, function(err, client) {
   if (err) console.log("Database error: " + err);
   else {
     console.log("Connected to database");
-    db = client.db("nodedb");
+      db = client.db("nodedb");
+      const auth = require("./auth");
+      const routes = require("./routes");
+
+      auth(app, db);
+      routes(app, db);
   }
 });
-
-const auth = require("./auth");
-const routes = require("./routes");
-
-auth(app, db);
-routes(app, db); 
-
+ 
 app.listen(process.env.PORT || 3001, () => {
   console.log("Express Server Listening on Port " + process.env.PORT || 3001);
 });
